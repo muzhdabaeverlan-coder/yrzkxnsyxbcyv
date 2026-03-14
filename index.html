@@ -13,7 +13,8 @@
         .btn-green { background: #28a745; }
         .btn-red { background: #dc3545; }
         .btn-row { display: flex; justify-content: space-between; width: 95%; gap: 5px; }
-        input { width: 95%; padding: 10px; border-radius: 8px; border: 1px solid #333; background: #17212b; color: white; box-sizing: border-box; margin-bottom: 5px; }
+        input { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #333; background: #17212b; color: white; box-sizing: border-box; margin-bottom: 5px; }
+        .input-group { width: 95%; }
         .mouse-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; width: 95%; }
         .mouse-btn { background: #343f4b; padding: 15px; }
     </style>
@@ -39,16 +40,24 @@
         <div></div><button class="btn mouse-btn" onclick="send('mouse|down')">▼</button><div></div>
     </div>
 
-    <div class="section-title">Система и CMD</div>
-    <input type="text" id="cmd_input" placeholder="Команда (например: ipconfig)">
-    <button class="btn" style="background:#555" onclick="sendCmd()">💻 ВЫПОЛНИТЬ В CMD</button>
+    <div class="section-title">Система и Файлы</div>
+    <button class="btn" style="background:#6f42c1" onclick="send('files_start')">📂 ОТКРЫТЬ ФАЙЛ-МЕНЕДЖЕР</button>
+    
+    <div class="input-group">
+        <input type="text" id="cmd_input" placeholder="Команда (например: ipconfig)">
+        <button class="btn" style="background:#555" onclick="sendCmd()">💻 ВЫПОЛНИТЬ В CMD</button>
+    </div>
     
     <div class="section-title">Взаимодействие</div>
-    <input type="text" id="url" placeholder="https://youtube.com">
-    <button class="btn" onclick="openLink()">🌐 ОТКРЫТЬ ССЫЛКУ</button>
+    <div class="input-group">
+        <input type="text" id="url" placeholder="https://youtube.com">
+        <button class="btn" onclick="openLink()">🌐 ОТКРЫТЬ ССЫЛКУ</button>
+    </div>
     
-    <input type="text" id="msg" placeholder="Текст сообщения...">
-    <button class="btn" onclick="sendMsg()">💬 ВЫВЕСТИ ОКНО</button>
+    <div class="input-group">
+        <input type="text" id="msg" placeholder="Текст сообщения...">
+        <button class="btn" onclick="sendMsg()">💬 ВЫВЕСТИ ОКНО</button>
+    </div>
 
     <div class="section-title">Питание</div>
     <div class="btn-row">
@@ -59,10 +68,25 @@
     <script>
         let tg = window.Telegram.WebApp;
         tg.expand();
-        function send(cmd) { tg.sendData(cmd); }
-        function sendCmd() { let v = document.getElementById('cmd_input').value; if(v) send('exec|' + v); }
-        function openLink() { let v = document.getElementById('url').value; if(v) send('open|' + v); }
-        function sendMsg() { let v = document.getElementById('msg').value; if(v) send('msg|' + v); }
+
+        function send(cmd) { 
+            tg.sendData(cmd); 
+        }
+
+        function sendCmd() { 
+            let v = document.getElementById('cmd_input').value; 
+            if(v) send('exec|' + v); 
+        }
+
+        function openLink() { 
+            let v = document.getElementById('url').value; 
+            if(v) send('open|' + v); 
+        }
+
+        function sendMsg() { 
+            let v = document.getElementById('msg').value; 
+            if(v) send('msg|' + v); 
+        }
     </script>
 </body>
 </html>
